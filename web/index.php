@@ -41,15 +41,16 @@ $app->post('/create-member/', function() use($app) {
   $lastname = 'Contreras';
 
   $data = [
-      'id' => $id,
       'postgres_id' => $postgres_id,
       'firstname' => $firstname,
       'lastname' => $lastname,
   ];
 
+  return json_encode($data);
+
   //$stmt = $app['pdo']->prepare("INSERT INTO salesforcedev (firstname, lastname) VALUES ('England', 'Contreras')");
   //$sql = "INSERT INTO salesforcedev.contact (Id, Postgrest_Id__c, FirstName, LastName) VALUES (:postgres_id, :firstname, :lastname)";
-  $sql = "INSERT INTO salesforcedev.contact (Postgrest_Id__c, FirstName, LastName) VALUES ('12345', 'England', 'Contreras')";
+  $sql = 'INSERT INTO salesforcedev.contact (Postgrest_Id__c, FirstName, LastName) VALUES ('12345', 'England', 'Contreras')';
   $stmt = $app['pdo']->prepare($sql);
   $stmt->execute($data);
 
