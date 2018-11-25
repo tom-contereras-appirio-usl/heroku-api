@@ -34,11 +34,14 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 
-$app->post('/create-member/', function() use($app) {
+$app->post('/create-member/', function(Request $request) use($app) {
 
-$request = new HttpRequest();
-$request->seUrl('https://usl-salesforce-webapp.heroku.com/create-member/');
-$request->setMethod(HTTP_METH_POST);
+  if(strpos($request->headers->get('Content-Type'), 'application/json') === 0){
+    $data - json_decode($request->getContent(), true);
+    $request->request->replace(is_array($data) ? $data : array());
+  }
+
+  $request->request->get('name');
 
 
 /*
