@@ -36,6 +36,12 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 
 $app->post('/create-member/', function() use($app) {
 
+$request = new HttpRequest();
+$request->seUrl('https://usl-salesforce-webapp.heroku.com/create-member/');
+$request->setMethod(HTTP_METH_POST);
+
+
+/*
   $postgres_id = '56787';
   $firstname = 'England';
   $lastname = 'Contreras';
@@ -55,6 +61,8 @@ $app->post('/create-member/', function() use($app) {
   $stmt->execute($data);
 
   return json_encode($data);
+
+*/
 
 });
 
