@@ -34,17 +34,36 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 
-$app->post('/create-member/', function(Request $request) use($app) {
+$app->get('/', function() use($app) {
+  $app['monolog']->addDebug('logging output.');
+  return $app['twig']->render('index.twig');
+});
 
-  if(strpos($request->headers->get('Content-Type'), 'application/json') === 0){
-    $data - json_decode($request->getContent(), true);
-    $request->request->replace(is_array($data) ? $data : array());
-  }
 
-  $request->request->get('name');
+$app->before(function (Request $request) {
+    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+        $data = json_decode($request->getContent(), true);
+        $request->request->replace(is_array($data) ? $data : array());
+    }
+});
 
+
+
+$app->post('/create-member/', function (Request $request) use ($app) {
+    $post = array(
+        'title' => $request->request->get('title'),
+        'body'  => $request->request->get('body'),
+    );
+
+    $post['id'] = createPost($post);
+
+    return $app->json($post, 201);
+});
 
 /*
+
+$app->post('/create-member/', function() use($app) {
+
   $postgres_id = '56787';
   $firstname = 'England';
   $lastname = 'Contreras';
@@ -65,12 +84,11 @@ $app->post('/create-member/', function(Request $request) use($app) {
 
   return json_encode($data);
 
-*/
 
 });
 
 
-
+*/
 
 
 $app->get('/retrieve-member/', function() use($app) {
